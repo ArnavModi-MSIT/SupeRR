@@ -148,7 +148,7 @@ footer a{color:var(--ink);font-weight:700}
       <div class="seg" role="group" aria-label="Role"><button id="b-bat" aria-pressed="true">Batters</button><button id="b-bowl" aria-pressed="false">Bowlers</button></div>
       <input class="search" id="q" type="search" placeholder="Search a player" aria-label="Search a player">
     </div>
-    <div class="legend" aria-hidden="true"><span><i style="background:var(--grey)"></i>Usual level (all balls, shrunk)</span><span><i style="background:var(--accent,var(--pink))" id="lg"></i>Pressure-specific lift</span><span><i class="dia"></i>Raw pressure value</span></div>
+    <div class="legend" aria-hidden="true"><span><i style="background:var(--grey)"></i>Expected from all-ball record</span><span><i style="background:var(--accent,var(--pink))" id="lg"></i>Pressure-specific lift</span><span><i class="dia"></i>Raw pressure value</span></div>
     <p class="note" id="scalenote"></p>
     <div class="board" id="board" role="list"></div>
     <button class="more" id="more" hidden></button>
@@ -177,7 +177,7 @@ footer a{color:var(--ink);font-weight:700}
     <p class="figcap">Counts of our ten that stay in the top ten. "Too few balls" means the player fell below the minimum sample in that cut, so the test could not be run.</p>
     <h3 style="margin:30px 0 10px">Where the model is less certain</h3>
     <ul class="lim">
-      <li>Sufiyan Muqeem and Vaibhav Sooryavanshi rest on only 100 to 120 pressure balls. About a third of Muqeem's came against Zimbabwe, Oman and A-teams.</li>
+      <li>Vaibhav Sooryavanshi, Ashutosh Sharma, Harry Brook and Krunal Pandya rest on only 100 to 135 pressure balls over 15 to 22 matches. A 15-match rule removed Sufiyan Muqeem (11 matches), a third of whose pressure balls came against Zimbabwe, Oman and A-teams.</li>
       <li>Rinku Singh ranks first on IPL data but much lower on T20I-only and since-2024 samples, so his lead is concentrated in some seasons.</li>
       <li>Dasun Shanaka's rating is driven by T20I matches; he has too few IPL pressure balls to be ranked on IPL data alone.</li>
       <li>The model has no venue, pitch, dew or team-strength inputs, and byes and leg-byes are estimated from run margins.</li>
@@ -226,14 +226,14 @@ function render(){
   $('#b-bat').setAttribute('aria-pressed',role==='bat');$('#b-bowl').setAttribute('aria-pressed',role==='bowl');
   const vals=rows.flatMap(r=>[r.raw,r.rating,r.base,0]);
   const lo=Math.floor(Math.min(...vals)*2)/2,hi=Math.ceil(Math.max(...vals)*2)/2,pct=v=>((v-lo)/(hi-lo)*100).toFixed(2);
-  $('#scalenote').textContent=`Win probability added per 100 pressure balls, in percentage points. ${rows.length} ${role==='bat'?'batters':'bowlers'} qualify (active in 2026, at least ${role==='bat'?100:90} pressure balls).`;
+  $('#scalenote').textContent=`Win probability added per 100 pressure balls, in wins (1.0 = one win per 100 pressure balls). ${rows.length} ${role==='bat'?'batters':'bowlers'} qualify (active in 2026, at least ${role==='bat'?100:90} pressure balls over at least 15 matches).`;
   const q=query.trim().toLowerCase();
   let list=rows.filter(r=>!q||r.name.toLowerCase().includes(q));
   const more=$('#more');
   if(!q&&!showAll){list=list.slice(0,10)}
   more.hidden=!!q;more.textContent=showAll?'Show the top 10 only':`Show all ${rows.length} qualifying players`;
   const board=$('#board');board.innerHTML='';
-  const head=el('div',{class:'head','aria-hidden':'true'},`<span>Rank</span><span>Player</span><span>Usual level plus pressure lift</span><span>Rating</span><span>In top 10</span>`);
+  const head=el('div',{class:'head','aria-hidden':'true'},`<span>Rank</span><span>Player</span><span>Expected level plus pressure lift</span><span>Rating</span><span>In top 10</span>`);
   board.appendChild(head);
   if(!list.length){board.appendChild(el('div',{class:'empty'},'No player matches that search. Try part of a surname.'));return}
   list.forEach(r=>{
@@ -255,7 +255,7 @@ function render(){
     const facts=role==='bat'
       ?[['Pressure strike rate',r.sr],['Boundary rate',r.bpct+'%'],['Dismissed per 100 balls',r.dis]]
       :[['Pressure economy',r.econ.toFixed(2)],['Wickets under pressure',r.wkts],['Dot-ball rate',r.dot+'%']];
-    facts.push(['Matches with pressure balls',r.matches],['Raw pressure value',sgn(r.raw)],['Usual level',sgn(r.base)]);
+    facts.push(['Matches with pressure balls',r.matches],['Raw pressure value',sgn(r.raw)],['Expected level (from all-ball record)',sgn(r.base)]);
     const N=rows.length,pos=v=>((v-1)/(N-1)*100).toFixed(2);
     const chip=(lab,k)=>r[k]==null?`<li class="na">${lab}: too few balls</li>`:`<li>${lab}: rank ${r[k]}</li>`;
     d.innerHTML=`${r.blurb?`<p>${r.blurb}</p>`:''}

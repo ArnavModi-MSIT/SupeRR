@@ -3,7 +3,7 @@ import sys
 pd.set_option('display.width',260); pd.set_option('display.max_columns',40)
 b=load('main'); ms=b.match_id.unique(); out={}
 for role,minp in (('bat',100),('bowl',90)):
-    T=tables(b,role); o=rate(T,minp=minp); o=o[o['last']>='2026-01-01']; elig=set(o.index)
+    T=tables(b,role); o=rate(T,minp=minp); o=o[(o['last']>='2026-01-01')&(o.matches>=MIN_PRESSURE_MATCHES)]; elig=set(o.index)
     rng=np.random.default_rng(42); K=300; rk={p:[] for p in elig}
     for i in range(K):
         cnt=pd.Series(rng.multinomial(len(ms),np.ones(len(ms))/len(ms)),index=ms)
@@ -13,6 +13,12 @@ for role,minp in (('bat',100),('bowl',90)):
     R=pd.DataFrame(rk).T
     o['p_top10']=(R<=10).mean(1); o['rank_med']=R.median(1); o['rank_lo']=R.quantile(.1,axis=1); o['rank_hi']=R.quantile(.9,axis=1)
     # sensitivities: rank under alt definitions
+    # extra sensitivities requested in review: usual level from non-pressure balls; pressure = chases only; no Associate/A-team matches
+    r=rate(tables(b,role,usual_np=True),minp=minp); r=r[r.index.isin(elig)]; o['rk_np']=r.rating.rank(ascending=False)
+    bc=b.copy(); bc['press']=bc.press&(bc.innings==2); r=rate(tables(bc,role),minp=minp*0.6); r=r[r.index.isin(elig)]; o['rk_chase']=r.rating.rank(ascending=False)
+    cm=b.drop_duplicates('match_id'); isipl=cm.comp_name.str.startswith('IPL',na=False); fm=(cm.ipl==0)&cm.bat_team.isin(FULL)&cm.bowl_team.isin(FULL)
+    r=rate(T,matches=set(cm.match_id[isipl|fm]),minp=30); r=r[r.index.isin(elig)]; o['rk_noassoc']=r.rating.rank(ascending=False)
+    r=rate(T,matches=set(cm.match_id[isipl]),minp=30); r=r[r.index.isin(elig)]; o['rk_iplonly']=r.rating.rank(ascending=False)
     for tag,mode,kw in (('abs','abs',{}),('iter','iter',{}),('ctx','ctx',{}),('ven','ven',{}),('top10','top10',{}),('noadj','noadj',{}),('w05','w05',{})):
         bb=load(mode); TT=tables(bb,role); r=rate(TT,minp=minp); r=r[r.index.isin(elig)]; o['rk_'+tag]=r.rating.rank(ascending=False)
     # ipl-only / t20i-only / recent (2024+)

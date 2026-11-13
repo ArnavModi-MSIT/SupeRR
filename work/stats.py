@@ -37,11 +37,11 @@ for role in ('bat','bowl'):
     o=pd.read_pickle(f'{W}/final_{role}.pkl').sort_values('rating',ascending=False); top=o.head(10).copy(); tops[role]=top
     # fig3 dotplot
     fig,ax=plt.subplots(figsize=(7,3.4)); y=np.arange(10)[::-1]
-    ax.barh(y,top.base100,color=GREY,height=.6,label='Usual level (shrunk, all balls)')
+    ax.barh(y,top.base100,color=GREY,height=.6,label='Expected from all-ball record')
     ax.barh(y,top.v100-top.base100,left=top.base100,color=PINK,height=.6,label='Pressure-specific lift')
     ax.scatter(top.v100_raw,y,c=NAVY,marker='D',s=18,zorder=5,label='Raw pressure value (unshrunk)')
     ax.set_yticks(y); ax.set_yticklabels([f'{i+1}. {n}' for i,n in enumerate(top.name)]); ax.axvline(0,c='k',lw=.6)
-    ax.set_xlabel('Win probability added per 100 pressure balls (%-pts, vs average player)'); ax.legend(frameon=False,fontsize=7.5,loc='lower right')
+    ax.set_xlabel('Win probability added per 100 pressure balls (wins, vs average player)'); ax.legend(frameon=False,fontsize=7.5,loc='lower right')
     ax.set_title(('Top-10 batters' if role=='bat' else 'Top-10 bowlers')+' under pressure',fontsize=10,loc='left')
     plt.tight_layout(); plt.savefig(f'fig/top_{role}.png',dpi=200); plt.close()
     # fig4 scatter usual vs pressure
@@ -49,7 +49,7 @@ for role in ('bat','bowl'):
     ax.scatter(top.av*100,top.pv*100,s=22,c=PINK)
     for k,(_,r) in enumerate(top.sort_values('rating',ascending=False).iterrows()): ax.annotate(str(k+1),(r.av*100,r.pv*100),fontsize=7,fontweight='bold',color='#0B1F4D',xytext=(4,3),textcoords='offset points')
     lim=[min(o.av.min(),o.pv.min())*100,max(o.av.max(),o.pv.max())*100]; ax.plot(lim,lim,'--',c=GREY,lw=.8)
-    ax.set_xlabel('Usual level (all balls), WPA per 100 balls'); ax.set_ylabel('Pressure level, WPA per 100 balls'); ax.set_title('Usual vs pressure performance (raw)',fontsize=9,loc='left')
+    ax.set_xlabel('Usual level (all balls), wins added per 100 balls'); ax.set_ylabel('Pressure level, wins added per 100 balls'); ax.set_title('Usual vs pressure performance (raw)',fontsize=9,loc='left')
     plt.tight_layout(); plt.savefig(f'fig/scatter_{role}.png',dpi=200); plt.close()
 # role descriptors
 bb=b.copy()

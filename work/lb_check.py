@@ -3,7 +3,7 @@ from core import *
 import sys
 K=int(sys.argv[2]) if len(sys.argv)>2 else 300; role,minp=(('bat',100),('bowl',90))[0 if sys.argv[1]=='bat' else 1]
 b=load('main'); ms=b.match_id.unique()
-T=tables(b,role); o=rate(T,minp=minp); o=o[o['last']>='2026-01-01']; elig=list(o.index)
+T=tables(b,role); o=rate(T,minp=minp); o=o[(o['last']>='2026-01-01')&(o.matches>=MIN_PRESSURE_MATCHES)]; elig=list(o.index)
 rng=np.random.default_rng(42); S=[]
 for i in range(K):
     cnt=pd.Series(rng.multinomial(len(ms),np.ones(len(ms))/len(ms)),index=ms)

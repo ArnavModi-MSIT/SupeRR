@@ -1,0 +1,44 @@
+{
+ "lo": {
+  "bat": {
+   "kept": 9,
+   "out": [
+    "Harry Brook"
+   ],
+   "in": [
+    "Shashank Singh"
+   ]
+  },
+  "bowl": {
+   "kept": 9,
+   "out": [
+    "Jasprit Bumrah"
+   ],
+   "in": [
+    "Abrar Ahmed"
+   ]
+  }
+ },
+ "hi": {
+  "bat": {
+   "kept": 8,
+   "out": [
+    "Rashid Khan",
+    "Harry Brook"
+   ],
+   "in": [
+    "Rahul Tewatia",
+    "Shreyas Iyer"
+   ]
+  },
+  "bowl": {
+   "kept": 9,
+   "out": [
+    "Krunal Pandya"
+   ],
+   "in": [
+    "Abrar Ahmed"
+   ]
+  }
+ }
+}

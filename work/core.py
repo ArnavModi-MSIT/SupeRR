@@ -46,7 +46,8 @@ def load(mode='main'):
     b['date']=pd.to_datetime(b.match_date)
     b['stk_out']=(b.is_wicket&(b.dismissed_player_id==b.striker_id)).astype(int)
     return b
-def tables(b,role):
+MIN_PRESSURE_MATCHES=15   # eligibility: pressure balls in at least this many matches
+def tables(b,role,usual_np=False):
     if role=='bat':
         d=b[b.bat_ok&(b.legal==1)]; pid,nm,V='striker_id','striker_name','V_bat'
     else:
@@ -58,10 +59,11 @@ def tables(b,role):
         return x.groupby(key).agg(n=('v','size'),sw=('w','sum'),swv=('wv','sum'),sv=('v','sum'),
             runs=('bat_runs' if role=='bat' else 'bowl_runs','sum'),dis=('stk_out' if role=='bat' else 'bowl_wk','sum'),
             bnd=('is_four','sum'),six=('is_six','sum'),dot=('bat_runs' if role=='bat' else 'bowl_runs',lambda s:(s==0).sum())).reset_index()
-    TP=agg(d[d.press]); TO=agg(d[d.ordin]); TA=d.groupby(['pid','match_id','innings']).agg(n=('v','size'),sw=('w','sum'),swv=('wv','sum')).reset_index()
+    du=d[~d.press] if usual_np else d   # usual level: all balls (default) or non-pressure balls only
+    TP=agg(d[d.press]); TO=agg(d[d.ordin]); TA=du.groupby(['pid','match_id','innings']).agg(n=('v','size'),sw=('w','sum'),swv=('wv','sum')).reset_index()
     sig2=d[d.press].v.var(); sig2o=d[d.ordin].v.var()
     info=d.groupby('pid').agg(last=('date','max'),first=('date','min'))
-    sig2a=d.v.var()
+    sig2a=du.v.var()
     return dict(TP=TP,TO=TO,TA=TA,sig2a=sig2a,names=names,sig2=sig2,sig2o=sig2o,info=info,role=role)
 CW={'bat':0.35,'bowl':0.10}
 def rate(T,mult=None,minp=100,matches=None,wts=None,use_delta=True,cw=None):

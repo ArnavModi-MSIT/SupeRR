@@ -29,7 +29,7 @@ for role in ('bat','bowl'):
         row=dict(rank=i+1,id=int(r['pid']),name=r['name'],n=int(r.n),matches=int(r.matches),raw=round(float(r.v100_raw),2),base=round(float(r.base100),2),lift=round(float(r.lift100),2),rating=round(float(r.v100),2),
                  cons=round(float(r.cons),2),ptop=round(float(r.p_top10),2),lo=int(round(r.rank_lo)),hi=int(round(r.rank_hi)),
                  last=str(r['last'])[:10],blurb=blurb(role,r['pid'],r))
-        for k in ('rk_abs','rk_top10','rk_noadj','rk_iter','rk_ctx','rk_ven','rk_ipl','rk_t20i','rk_2024p'):
+        for k in ('rk_abs','rk_top10','rk_noadj','rk_iter','rk_ctx','rk_ven','rk_ipl','rk_t20i','rk_2024p','rk_np','rk_chase','rk_noassoc','rk_iplonly'):
             row[k]=None if pd.isna(r[k]) else int(r[k])
         if role=='bat': row.update(sr=round(float(r.sr),0),bpct=round(float(r.bpct),1),dis=round(float(r.dis_rate),1))
         else: row.update(econ=round(float(r.econ),2),wkts=int(r.wkts),dot=round(float(r.dotpct),0))
@@ -37,7 +37,7 @@ for role in ('bat','bowl'):
     out[role]=rows
 top={r:out[r][:10] for r in ('bat','bowl')}
 cnt=lambda r,c:sum(1 for x in top[r] if x[c] is not None and x[c]<=10)
-out['sens']=[['No opposition-strength correction','rk_noadj'],['Iterative player-level opposition adjustment','rk_iter'],['Baseline by bowler type and batter hand','rk_ctx'],['Baseline by ground scoring level','rk_ven'],['Absolute threshold, leverage ≥ 1.3 (95% chases)','rk_abs'],['Stricter pressure, top 10% leverage','rk_top10'],['IPL / T20-format matches only','rk_ipl'],['T20I matches only','rk_t20i'],['Since 1 Jan 2024 only','rk_2024p']]
+out['sens']=[['No opposition-strength correction','rk_noadj'],['Iterative player-level opposition adjustment','rk_iter'],['Baseline by bowler type and batter hand','rk_ctx'],['Baseline by ground scoring level','rk_ven'],['Absolute threshold, leverage ≥ 1.3 (95% chases)','rk_abs'],['Stricter pressure, top 10% leverage','rk_top10'],['IPL / T20-format matches only','rk_ipl'],['T20I matches only','rk_t20i'],['Since 1 Jan 2024 only','rk_2024p'],['Usual level estimated from non-pressure balls only','rk_np'],['Pressure balls from second-innings chases only','rk_chase'],['Excluding Associate-nation and A-team matches','rk_noassoc'],['IPL matches only (true IPL)','rk_iplonly']]
 out['sens']=[[n,cnt('bat',c),sum(1 for x in top['bat'] if x[c] is None),cnt('bowl',c),sum(1 for x in top['bowl'] if x[c] is None)] for n,c in out['sens']]
 open('../docs/data.js','w',encoding='utf-8').write('window.DATA='+json.dumps(out,ensure_ascii=False)+';')
 print(len(out['bat']),len(out['bowl']),out['sens'],open('../docs/data.js').__sizeof__())

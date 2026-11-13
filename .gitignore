@@ -28,3 +28,6 @@ testing/
 notes/
 work/build_report_pre_cons.py
 work/consistency.json
+work/build_report_pre_units.py
+work/*_pre_*.py
+work/build_report_7p.py
