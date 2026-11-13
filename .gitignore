@@ -1,0 +1,26 @@
+# Competition data pack (supplied by the organiser, not redistributed here)
+6af3166e7b922_data_pack/
+6af3166e7b922_data_pack.zip
+
+# Large regenerable intermediates (rebuilt by the pipeline)
+*.pkl
+*.parquet
+
+# Scratch, backups and logs
+__pycache__/
+*.pyc
+work/chk/
+work/chk*.png
+work/pg-*.png
+work/boot_out*.txt
+work/stats_out.txt
+work/rep.txt
+work/core_v1.py
+work/core_pre_portable.py
+work/build_report_pre_rrfit.py
+work/run1.py
+work/final.py
+_to_delete/
+.DS_Store
+Thumbs.db
+work/SupeRR_R1_Methodology_Report.pdf
