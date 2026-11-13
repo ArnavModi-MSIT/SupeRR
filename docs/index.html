@@ -58,9 +58,10 @@ h2{font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:1.05;letter-spacing:-.025em;
 .legend i{display:inline-block;width:14px;height:9px;margin-right:6px;vertical-align:baseline}
 .legend .dia{width:9px;height:9px;transform:rotate(45deg);background:var(--ink);margin-right:8px}
 /* leaderboard */
-.board{border-top:2px solid var(--ink)}
+.board{border-top:2px solid var(--ink);max-height:min(640px,75vh);overflow-y:auto;scrollbar-gutter:stable;overscroll-behavior:contain}
+.item.cut{border-bottom:2px solid var(--ink)}
 .head,.row{display:grid;grid-template-columns:2.6rem minmax(150px,1.1fr) minmax(220px,1.7fr) 5.2rem 5.6rem;gap:0 18px;align-items:center}
-.head{font-size:12.5px;color:var(--mute);padding:9px 0;border-bottom:1px solid var(--line)}
+.head{font-size:12.5px;color:var(--mute);padding:9px 0;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:2;background:var(--paper)}
 .head span:nth-child(n+4),.row .num{text-align:right}
 .item{border-bottom:1px solid var(--line)}
 .row{width:100%;background:none;border:0;font:inherit;color:inherit;text-align:left;padding:12px 0;cursor:pointer}
@@ -151,7 +152,7 @@ footer a{color:var(--ink);font-weight:700}
     </div>
     <div class="legend" aria-hidden="true"><span><i style="background:var(--grey)"></i>Expected from all-ball record</span><span><i style="background:var(--accent,var(--pink))" id="lg"></i>Pressure-specific lift</span><span><i class="dia"></i>Raw pressure value</span></div>
     <p class="note" id="scalenote"></p>
-    <div class="board" id="board" role="list"></div>
+    <div class="board" id="board" role="list" tabindex="0" aria-label="All qualifying players, scrollable"></div>
     <button class="more" id="more" hidden></button>
   </section>
 
@@ -230,19 +231,18 @@ function render(){
   $('#b-bat').setAttribute('aria-pressed',role==='bat');$('#b-bowl').setAttribute('aria-pressed',role==='bowl');
   const vals=rows.flatMap(r=>[r.raw,r.rating,r.base,0]);
   const lo=Math.floor(Math.min(...vals)*2)/2,hi=Math.ceil(Math.max(...vals)*2)/2,pct=v=>((v-lo)/(hi-lo)*100).toFixed(2);
-  $('#scalenote').textContent=`Win probability added per 100 pressure balls, in wins (1.0 = one win per 100 pressure balls). ${rows.length} ${role==='bat'?'batters':'bowlers'} qualify (active in 2026, at least ${role==='bat'?100:90} pressure balls over at least 15 matches).`;
+  $('#scalenote').textContent=`Win probability added per 100 pressure balls, in wins (1.0 = one win per 100 pressure balls). ${rows.length} ${role==='bat'?'batters':'bowlers'} qualify (active in 2026, at least ${role==='bat'?100:90} pressure balls over at least 15 matches). Scroll the list to see everyone; the heavy line marks the end of our top ten.`;
   const q=query.trim().toLowerCase();
   let list=rows.filter(r=>!q||r.name.toLowerCase().includes(q));
   const more=$('#more');
-  if(!q&&!showAll){list=list.slice(0,10)}
-  more.hidden=!!q;more.textContent=showAll?'Show the top 10 only':`Show all ${rows.length} qualifying players`;
+  more.hidden=true;
   const board=$('#board');board.innerHTML='';
   const head=el('div',{class:'head','aria-hidden':'true'},`<span>Rank</span><span>Player</span><span>Expected level plus pressure lift</span><span>Rating</span><span>In top 10</span>`);
   board.appendChild(head);
   if(!list.length){board.appendChild(el('div',{class:'empty'},'No player matches that search. Try part of a surname.'));return}
   list.forEach(r=>{
     const open=expanded===r.id;
-    const it=el('div',{class:'item'+(open?' open':''),role:'listitem'});
+    const it=el('div',{class:'item'+(open?' open':'')+(r.rank===10&&!q?' cut':''),role:'listitem'});
     const lift=r.rating-r.base;
     const a=Math.min(r.base,r.rating),b=Math.max(r.base,r.rating);
     const sub=role==='bat'?`${r.n} pressure balls, strike rate ${r.sr}`:`${r.n} pressure balls, economy ${r.econ.toFixed(2)}`;
@@ -253,7 +253,7 @@ function render(){
         <span class="bar lift ${lift<0?'neg':''}" style="left:${pct(a)}%;width:${(pct(b)-pct(a)).toFixed(2)}%"></span>
         <span class="raw" style="left:${pct(r.raw)}%"></span></span>
       <span class="rtc num">${sgn(r.rating)}</span><span class="ptc num">${Math.round(r.ptop*100)}%</span>`;
-    btn.addEventListener('click',()=>{expanded=open?null:r.id;render();const t=document.getElementById('d'+r.id);});
+    btn.addEventListener('click',()=>{const sc=board.scrollTop;expanded=open?null:r.id;render();board.scrollTop=sc;});
     it.appendChild(btn);
     const d=el('div',{class:'detail',id:'d'+r.id});
     const facts=role==='bat'
@@ -270,10 +270,10 @@ function render(){
     it.appendChild(d);board.appendChild(it);
   });
 }
-$('#b-bat').onclick=()=>{role='bat';expanded=null;render()};
-$('#b-bowl').onclick=()=>{role='bowl';expanded=null;render()};
+$('#b-bat').onclick=()=>{role='bat';expanded=null;render();$('#board').scrollTop=0};
+$('#b-bowl').onclick=()=>{role='bowl';expanded=null;render();$('#board').scrollTop=0};
 $('#more').onclick=()=>{showAll=!showAll;render()};
-$('#q').addEventListener('input',e=>{query=e.target.value;render()});
+$('#q').addEventListener('input',e=>{query=e.target.value;render();$('#board').scrollTop=0});
 
 /* method */
 $('#s3').textContent=`A delivery counts as pressure when its leverage is in the top 20% of its own innings: at least ${M.cut1.toFixed(2)} when batting first and ${M.cut2.toFixed(2)} in a chase. That gives ${M.press_balls.toLocaleString()} pressure balls, and the bottom half of balls becomes each player's ordinary baseline.`;
