@@ -24,3 +24,7 @@ _to_delete/
 .DS_Store
 Thumbs.db
 work/SupeRR_R1_Methodology_Report.pdf
+testing/
+notes/
+work/build_report_pre_cons.py
+work/consistency.json

@@ -49,6 +49,7 @@ python rel.py             # split-half reliability
 python cv.py              # cross-validated shrinkage
 python boot.py            # ratings, bootstrap, sensitivity (writes final_*.pkl)
 python stats.py           # figures and stats.json
+python consistency.py     # share of pressure matches with a positive value (report section 7)
 python export_site.py     # docs/data.js
 python build_report.py    # report PDF
 ```

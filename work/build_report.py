@@ -124,10 +124,11 @@ rows=[['Alternative definition / sample','Batters still in top 10','Bowlers stil
  ['T20I matches only',f"{cnt(bat,'rk_t20i')}/10 ({int(bat.rk_t20i.isna().sum())} too few balls)",f"{cnt(bowl,'rk_t20i')}/10 ({int(bowl.rk_t20i.isna().sum())} too few balls)"],
  ['Since 1 Jan 2024 only',f"{cnt(bat,'rk_2024p')}/10",f"{cnt(bowl,'rk_2024p')}/10"]]
 el+= [P('7. Reliability and limitations',H1),
- P("<b>How consistent is the ranking?</b> We tested it three ways."),
+ P("<b>How consistent is the ranking?</b> We tested it four ways."),
  bl("<b>Split-half.</b> Over 30 random halvings of the matches, the rank correlation between ratings from the two halves averaged 0.16 for batters and 0.26 for bowlers (Spearman–Brown corrected to the full sample: about 0.28 and 0.41). Pressure samples are small, so this is modest and we state it plainly."),
  bl("<b>Out-of-sample prediction.</b> Ratings from one half of matches correlate about 0.14 with players' realised pressure value in the other half, higher than the unshrunk pressure values alone (0.13 for batters, 0.09 for bowlers)."),
  bl("<b>Bootstrap.</b> 300 resamples of matches give each player a rank range and a probability of finishing in the top 10 (tables in §1). The leading five or six names in each list are reasonably stable (P(top 10) of roughly 60–90%); places 7–10 are close calls (see P(top 10)). Rinku Singh, Ashutosh Sharma, Vaibhav Sooryavanshi, Tim David and Kamindu Mendis lead the batters; Sufiyan Muqeem, Mohsin Khan, Josh Hazlewood, Varun Chakravarthy, Rashid Khan and Sunil Narine lead the bowlers."),
+ bl("<b>Match-to-match consistency.</b> In what share of a player's pressure matches was his pressure value above that of an average player in the same situation? For our top-ten batters the median is 59% (range 44% for Ashutosh Sharma to 100% for Sooryavanshi, over 16 matches), against 54% for all 101 eligible batters; for our top-ten bowlers it is 57% (46% for Varun Chakravarthy to 82% for Muqeem, over 11 matches), against 44% for all 106 eligible bowlers. Ashutosh Sharma's high rating therefore rests on a minority of very good matches, not steady ones."),
  KeepTogether([P("<b>Sensitivity.</b> Number of our ten who stay in the top ten when a modelling choice changes:",B),
  tbl([[Paragraph(str(c),SMW if i==0 else SM) for c in r] for i,r in enumerate(rows)],[88*mm,45*mm,45*mm])]),Spacer(1,3),
  P("<b>Where the model is less certain.</b>",B),
