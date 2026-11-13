@@ -39,6 +39,6 @@ top={r:out[r][:10] for r in ('bat','bowl')}
 cnt=lambda r,c:sum(1 for x in top[r] if x[c] is not None and x[c]<=10)
 out['sens']=[['No opposition-strength correction','rk_noadj'],['Iterative player-level opposition adjustment','rk_iter'],['Baseline by bowler type and batter hand','rk_ctx'],['Baseline by ground scoring level','rk_ven'],['Absolute threshold, leverage ≥ 1.3 (95% chases)','rk_abs'],['Stricter pressure, top 10% leverage','rk_top10'],['IPL / T20-format matches only','rk_ipl'],['T20I matches only','rk_t20i'],['Since 1 Jan 2024 only','rk_2024p']]
 out['sens']=[[n,cnt('bat',c),sum(1 for x in top['bat'] if x[c] is None),cnt('bowl',c),sum(1 for x in top['bowl'] if x[c] is None)] for n,c in out['sens']]
-open('../site/data.js','w',encoding='utf-8').write('window.DATA='+json.dumps(out,ensure_ascii=False)+';')
-print(len(out['bat']),len(out['bowl']),out['sens'],open('../site/data.js').__sizeof__())
-import os; print(os.path.getsize('../site/data.js'))
+open('../docs/data.js','w',encoding='utf-8').write('window.DATA='+json.dumps(out,ensure_ascii=False)+';')
+print(len(out['bat']),len(out['bowl']),out['sens'],open('../docs/data.js').__sizeof__())
+import os; print(os.path.getsize('../docs/data.js'))

@@ -4,7 +4,7 @@ Who delivers when the game is on the line? A leverage-based pressure model for I
 batters and bowlers (2022–2026), built for Rajasthan Royals' SupeRR Selector Season 2.
 
 - **Report:** [`SupeRR_R1_Methodology_Report.pdf`](SupeRR_R1_Methodology_Report.pdf) (6 pages)
-- **Dashboard:** [`site/`](site/) is a static page (`index.html` + `data.js` + `report.pdf`); no build step.
+- **Dashboard:** [`docs/`](docs/) is a static page (`index.html` + `data.js` + `report.pdf`); no build step.
 
 ## Result
 
@@ -49,17 +49,17 @@ python rel.py             # split-half reliability
 python cv.py              # cross-validated shrinkage
 python boot.py            # ratings, bootstrap, sensitivity (writes final_*.pkl)
 python stats.py           # figures and stats.json
-python export_site.py     # site/data.js
+python export_site.py     # docs/data.js
 python build_report.py    # report PDF
 ```
 
-Seeds are fixed (42 for bootstraps). To view the dashboard locally: `cd site && python -m http.server 8000`.
+Seeds are fixed (42 for bootstraps). To view the dashboard locally: `cd docs && python -m http.server 8000`.
 
 ## Layout
 
 ```
 work/   pipeline scripts (core.py holds shared loaders and rating code), fig/, stats.json, top_*.csv
-site/   static dashboard
+docs/   static dashboard (served by GitHub Pages)
 SupeRR_R1_Methodology_Report.pdf
 ```
 
