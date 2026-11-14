@@ -49,7 +49,7 @@ for role in ('bat','bowl'):
     ax.scatter(top.av*100,top.pv*100,s=22,c=PINK)
     for k,(_,r) in enumerate(top.sort_values('rating',ascending=False).iterrows()): ax.annotate(str(k+1),(r.av*100,r.pv*100),fontsize=7,fontweight='bold',color='#0B1F4D',xytext=(4,3),textcoords='offset points')
     lim=[min(o.av.min(),o.pv.min())*100,max(o.av.max(),o.pv.max())*100]; ax.plot(lim,lim,'--',c=GREY,lw=.8)
-    ax.set_xlabel('Usual level (all balls), wins added per 100 balls'); ax.set_ylabel('Pressure level, wins added per 100 balls'); ax.set_title('Usual vs pressure performance (raw)',fontsize=9,loc='left')
+    ax.set_xlabel('Usual level (all legal balls), wins added per 100 balls'); ax.set_ylabel('Pressure level, wins added per 100 balls'); ax.set_title(('Batters' if role=='bat' else 'Bowlers')+': usual vs pressure level (raw)',fontsize=9,loc='left')
     plt.tight_layout(); plt.savefig(f'fig/scatter_{role}.png',dpi=200); plt.close()
 # role descriptors
 bb=b.copy()

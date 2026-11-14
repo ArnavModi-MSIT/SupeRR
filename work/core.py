@@ -51,7 +51,7 @@ def tables(b,role,usual_np=False):
     if role=='bat':
         d=b[b.bat_ok&(b.legal==1)]; pid,nm,V='striker_id','striker_name','V_bat'
     else:
-        d=b; pid,nm,V='bowler_id','bowler_name','V_bowl'
+        d=b[b.legal==1]; pid,nm,V='bowler_id','bowler_name','V_bowl'   # legal balls only, matching pressure/ordinary samples
     d=d.assign(v=d[V],pid=d[pid],wv=d[V]*d.w)
     names=d.groupby('pid')[nm].agg(lambda s:s.mode().iloc[0])
     key=['pid','match_id','innings']

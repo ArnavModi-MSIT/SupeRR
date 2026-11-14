@@ -1,0 +1,144 @@
+{
+ "bowl_all": {
+  "bat": {
+   "kept": 10,
+   "out": [],
+   "in": [],
+   "order": [
+    "Rinku Singh",
+    "Ashutosh Sharma",
+    "Vaibhav Sooryavanshi",
+    "Tim David",
+    "Kamindu Mendis",
+    "Dasun Shanaka",
+    "Rashid Khan",
+    "Heinrich Klaasen",
+    "Suryakumar Yadav",
+    "Harry Brook"
+   ],
+   "eligible": 99,
+   "press_share": 0.20000642350145065
+  },
+  "bowl": {
+   "kept": 9,
+   "out": [
+    "Matheesha Pathirana"
+   ],
+   "in": [
+    "Krunal Pandya"
+   ],
+   "order": [
+    "Mohsin Khan",
+    "Josh Hazlewood",
+    "Varun Chakravarthy",
+    "Rashid Khan",
+    "Sunil Narine",
+    "Wanindu Hasaranga",
+    "Kuldeep Yadav",
+    "Lockie Ferguson",
+    "Jasprit Bumrah",
+    "Krunal Pandya"
+   ],
+   "eligible": 89,
+   "press_share": 0.20000642350145065
+  }
+ },
+ "cut_match": {
+  "bat": {
+   "kept": 8,
+   "out": [
+    "Kamindu Mendis",
+    "Heinrich Klaasen"
+   ],
+   "in": [
+    "Abhishek Sharma",
+    "Phil Salt"
+   ],
+   "order": [
+    "Rinku Singh",
+    "Ashutosh Sharma",
+    "Vaibhav Sooryavanshi",
+    "Tim David",
+    "Dasun Shanaka",
+    "Rashid Khan",
+    "Suryakumar Yadav",
+    "Harry Brook",
+    "Abhishek Sharma",
+    "Phil Salt"
+   ],
+   "eligible": 92,
+   "press_share": 0.2018317684970077
+  },
+  "bowl": {
+   "kept": 10,
+   "out": [],
+   "in": [],
+   "order": [
+    "Josh Hazlewood",
+    "Mohsin Khan",
+    "Rashid Khan",
+    "Varun Chakravarthy",
+    "Sunil Narine",
+    "Wanindu Hasaranga",
+    "Kuldeep Yadav",
+    "Lockie Ferguson",
+    "Matheesha Pathirana",
+    "Jasprit Bumrah"
+   ],
+   "eligible": 100,
+   "press_share": 0.2018317684970077
+  }
+ },
+ "both": {
+  "bat": {
+   "kept": 8,
+   "out": [
+    "Kamindu Mendis",
+    "Heinrich Klaasen"
+   ],
+   "in": [
+    "Abhishek Sharma",
+    "Phil Salt"
+   ],
+   "order": [
+    "Rinku Singh",
+    "Ashutosh Sharma",
+    "Vaibhav Sooryavanshi",
+    "Tim David",
+    "Dasun Shanaka",
+    "Rashid Khan",
+    "Suryakumar Yadav",
+    "Harry Brook",
+    "Abhishek Sharma",
+    "Phil Salt"
+   ],
+   "eligible": 92,
+   "press_share": 0.2018317684970077
+  },
+  "bowl": {
+   "kept": 8,
+   "out": [
+    "Lockie Ferguson",
+    "Matheesha Pathirana"
+   ],
+   "in": [
+    "Krunal Pandya",
+    "Mohammad Nawaz"
+   ],
+   "order": [
+    "Mohsin Khan",
+    "Josh Hazlewood",
+    "Rashid Khan",
+    "Varun Chakravarthy",
+    "Sunil Narine",
+    "Wanindu Hasaranga",
+    "Kuldeep Yadav",
+    "Jasprit Bumrah",
+    "Krunal Pandya",
+    "Mohammad Nawaz"
+   ],
+   "eligible": 100,
+   "press_share": 0.2018317684970077
+  }
+ }
+}

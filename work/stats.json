@@ -286,19 +286,6 @@
     "Royal Challengers Bengaluru"
    ]
   },
-  "bowl3644": {
-   "btype": "Left-arm Chinaman",
-   "pace": "Spin",
-   "inn2": 69.63562753036437,
-   "pp": 0.0,
-   "mid": 65.58704453441295,
-   "death": 34.41295546558704,
-   "o_econ": 8.033898305084746,
-   "teams": [
-    "Delhi Capitals",
-    "India"
-   ]
-  },
   "bowl4692": {
    "btype": "Right-arm Fast",
    "pace": "Pace",
@@ -312,6 +299,32 @@
     "Gujarat Titans"
    ]
   },
+  "bowl3644": {
+   "btype": "Left-arm Chinaman",
+   "pace": "Spin",
+   "inn2": 69.63562753036437,
+   "pp": 0.0,
+   "mid": 65.58704453441295,
+   "death": 34.41295546558704,
+   "o_econ": 8.033898305084746,
+   "teams": [
+    "Delhi Capitals",
+    "India"
+   ]
+  },
+  "bowl8661": {
+   "btype": "Right-arm Fast",
+   "pace": "Pace",
+   "inn2": 61.471861471861466,
+   "pp": 5.194805194805195,
+   "mid": 28.57142857142857,
+   "death": 66.23376623376623,
+   "o_econ": 7.166666666666666,
+   "teams": [
+    "Chennai Super Kings",
+    "Sri Lanka"
+   ]
+  },
   "bowl2933": {
    "btype": "Right-arm Fast",
    "pace": "Pace",
@@ -323,19 +336,6 @@
    "teams": [
     "Mumbai Indians",
     "India"
-   ]
-  },
-  "bowl4219": {
-   "btype": "Slow left-arm orthodox",
-   "pace": "Spin",
-   "inn2": 70.37037037037037,
-   "pp": 23.703703703703706,
-   "mid": 68.88888888888889,
-   "death": 7.4074074074074066,
-   "o_econ": 7.958641063515509,
-   "teams": [
-    "Lucknow Super Giants",
-    "Royal Challengers Bengaluru"
    ]
   }
  }

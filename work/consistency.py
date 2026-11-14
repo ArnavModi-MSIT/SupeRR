@@ -14,7 +14,8 @@ for role,f,idc,vc,ok in [('bat',fb,'striker_id','V_bat','bat_ok'),('bowl',fw,'bo
     el=sh[sh.index.isin(f.index)]
     top=f.sort_values('rank').head(10)
     t=sh.reindex(top.index)
-    out[role]={'top_median':float(t.median()),'top_min':float(t.min()),'top_max':float(t.max()),
+    allp={int(k):round(float(v),3) for k,v in sh[sh.index.isin(f.index)].items()}
+    out[role]={'all':allp,'top_median':float(t.median()),'top_min':float(t.min()),'top_max':float(t.max()),
                'elig_median':float(el.median()),'by_player':{n:round(float(v),3) for n,v in zip(top.name,t)}}
     print(role,out[role]['top_median'],out[role]['top_min'],out[role]['top_max'],'eligible median',out[role]['elig_median'],len(el))
     print(out[role]['by_player'])

@@ -31,3 +31,9 @@ work/consistency.json
 work/build_report_pre_units.py
 work/*_pre_*.py
 work/build_report_7p.py
+work/out_*.txt
+work/stats_out_new.txt
+work/*_new.py
+work/*_pre.py
+work/*_pre_*.html
+work/*_pre_*.md

@@ -10,13 +10,9 @@
    ]
   },
   "bowl": {
-   "kept": 9,
-   "out": [
-    "Jasprit Bumrah"
-   ],
-   "in": [
-    "Abrar Ahmed"
-   ]
+   "kept": 10,
+   "out": [],
+   "in": []
   }
  },
  "hi": {
@@ -34,10 +30,10 @@
   "bowl": {
    "kept": 9,
    "out": [
-    "Krunal Pandya"
+    "Matheesha Pathirana"
    ],
    "in": [
-    "Abrar Ahmed"
+    "Mujeeb Ur Rahman"
    ]
   }
  }
