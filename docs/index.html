@@ -238,7 +238,8 @@ function render(){
   const more=$('#more');
   more.hidden=true;
   const board=$('#board');board.innerHTML='';
-  const head=el('div',{class:'head','aria-hidden':'true'},`<span>Rank</span><span>Player</span><span>Expected level plus pressure lift</span><span>Rating</span><span>In top 10</span>`);
+  let ticks='';for(let v=Math.ceil(lo);v<=hi;v++)ticks+=`<span style="position:absolute;top:0;left:${pct(v)}%;transform:translateX(-50%);${v===0?'font-weight:700;color:#0B1F4B':''}">${v>0?'+'+v:v<0?'−'+Math.abs(v):'0 (average)'}</span>`;
+  const head=el('div',{class:'head','aria-hidden':'true'},`<span>Rank</span><span>Player</span><span style="position:relative;display:block;height:1.2em">${ticks}</span><span>Rating</span><span>In top 10</span>`);
   board.appendChild(head);
   if(!list.length){board.appendChild(el('div',{class:'empty'},'No player matches that search. Try part of a surname.'));return}
   list.forEach(r=>{
