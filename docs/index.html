@@ -82,7 +82,10 @@ h2{font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:1.05;letter-spacing:-.025em;
 .strip .bar{position:absolute;top:8px;height:10px}
 .strip .base{background:var(--grey)}
 .strip .lift{background:var(--accent)}
-.strip .lift.neg{background:var(--ink)}
+.strip .lift.neg{background:repeating-linear-gradient(135deg,transparent 0 3px,var(--grey) 3px 4.5px);box-shadow:inset 0 0 0 1px var(--grey)}
+.strip .tick{position:absolute;top:5px;width:2px;height:16px;margin-left:-1px;background:var(--ink)}
+.legend .hat{background:repeating-linear-gradient(135deg,transparent 0 3px,var(--grey) 3px 4.5px);box-shadow:inset 0 0 0 1px var(--grey)}
+.legend .tk{width:2px;height:12px;background:var(--ink);vertical-align:-1px}
 .strip .raw{position:absolute;top:8px;width:10px;height:10px;margin-left:-5px;background:var(--ink);transform:rotate(45deg)}
 .detail{display:none;padding:4px 0 22px 3.1rem;max-width:880px}
 .item.open .detail{display:block}
@@ -143,7 +146,7 @@ footer a{color:var(--ink);font-weight:700}
     <figure class="hero-fig" aria-labelledby="herocap">
       <p class="figcap" style="margin:0 0 6px;font-weight:600;color:#0B1F4B;font-size:15px">How decisive is each ball? Leverage by over, 818 matches</p>
       <svg id="hero" viewBox="0 0 1000 360" role="img" aria-label="Line chart of average leverage by over. A team batting first stays near or below an average ball throughout; a team chasing rises from about 1.3 in over 1 to more than 3.5 in over 20."></svg>
-      <figcaption class="figcap" id="herocap">Leverage is how far one ball can swing the chance of winning. 1 is an average ball; 3 means three times as decisive. A chase gets steadily more decisive as the target nears. Our pressure balls are the top 20% on this measure in each innings type: mostly the last overs of chases, and the powerplay and death overs of first innings.</figcaption>
+      <figcaption class="figcap" id="herocap">Leverage is how far one ball can swing the chance of winning. 1 is an average ball; 3 means three times as decisive. A chase becomes far more decisive in its last overs. Our pressure balls are the top 20% on this measure in each innings type: mostly the last overs of chases, and the powerplay and death overs of first innings.</figcaption>
     </figure>
   </div>
 
@@ -154,7 +157,7 @@ footer a{color:var(--ink);font-weight:700}
       <div class="seg" role="group" aria-label="Role"><button id="b-bat" aria-pressed="true">Batters</button><button id="b-bowl" aria-pressed="false">Bowlers</button></div>
       <input class="search" id="q" type="search" placeholder="Search a player" aria-label="Search a player">
     </div>
-    <div class="legend" aria-hidden="true"><span><i style="background:var(--grey)"></i>Expected from all-ball record</span><span><i style="background:var(--accent,var(--pink))" id="lg"></i>Pressure-specific lift</span><span><i class="dia"></i>Raw pressure value</span></div>
+    <div class="legend" aria-hidden="true"><span><i style="background:var(--grey)"></i>Expected from all-ball record</span><span><i style="background:var(--accent,var(--pink))" id="lg"></i>Pressure-specific lift</span><span><i class="hat"></i>Shortfall (rating below expected)</span><span><i class="tk"></i>Rating</span><span><i class="dia"></i>Raw pressure value</span></div>
     <p class="note" id="scalenote"></p>
     <div class="board" id="board" role="list" tabindex="0" aria-label="All qualifying players, scrollable"></div>
   </section>
@@ -186,7 +189,7 @@ footer a{color:var(--ink);font-weight:700}
       <li>Mohsin Khan and Josh Hazlewood are effectively tied at the top of the bowlers (0.763 and 0.762). Bowler ratings rest on legal balls only; counting wides and no-balls in a bowler's usual level would swap Krunal Pandya in for Matheesha Pathirana (see table).</li>
       <li>Rinku Singh ranks first on IPL data but much lower on T20I-only and since-2024 samples, so his lead is concentrated in some seasons.</li>
       <li>Dasun Shanaka's rating is driven by T20I matches; he has too few IPL pressure balls to be ranked on IPL data alone.</li>
-      <li>The win-probability model has no venue, pitch, dew or team-strength inputs. It is weaker in the first innings (about 64% of results called correctly, against 82% in chases), so first-innings pressure is measured less sharply. Byes and leg-byes are estimated from run margins.</li>
+      <li>The win-probability model has no venue, pitch, dew or team-strength inputs. It is weaker in the first innings (about 64% of results called correctly, against 81% in chases), so first-innings pressure is measured less sharply. Byes and leg-byes are estimated from run margins.</li>
       <li>Ratings are not comparable between the batter and bowler lists; Rashid Khan appears in both.</li>
       <li>The data runs to 1 Nov 2026 and shows no retention lists, so some listed players may already be contracted before the 2027 auction. There is also no price, nationality or availability information: the ranking shows who performs, not who is a bargain.</li>
     </ul>
@@ -249,13 +252,14 @@ function render(){
     const it=el('div',{class:'item'+(open?' open':'')+(r.rank===10&&!q?' cut':''),role:'listitem'});
     const lift=r.rating-r.base;
     const a=Math.min(r.base,r.rating),b=Math.max(r.base,r.rating);
+    const g=(lift<0&&r.base>0)?Math.max(0,r.rating):r.base;
     const sub=role==='bat'?`${r.n} pressure balls, strike rate ${r.sr}`:`${r.n} pressure balls, economy ${r.econ.toFixed(2)}`;
     const btn=el('button',{class:'row','aria-expanded':open,'aria-controls':'d'+r.id});
     btn.innerHTML=`<span class="rk">${r.rank}</span><span class="nmc nm">${r.name}<small>${sub}</small></span>
       <span class="stc strip" aria-hidden="true"><span class="zero" style="left:${pct(0)}%"></span>
-        <span class="bar base" style="left:${pct(Math.min(0,r.base))}%;width:${(pct(Math.max(0,r.base))-pct(Math.min(0,r.base))).toFixed(2)}%"></span>
+        <span class="bar base" style="left:${pct(Math.min(0,g))}%;width:${(pct(Math.max(0,g))-pct(Math.min(0,g))).toFixed(2)}%"></span>
         <span class="bar lift ${lift<0?'neg':''}" style="left:${pct(a)}%;width:${(pct(b)-pct(a)).toFixed(2)}%"></span>
-        <span class="raw" style="left:${pct(r.raw)}%"></span></span>
+        <span class="tick" style="left:${pct(r.rating)}%"></span><span class="raw" style="left:${pct(r.raw)}%"></span></span>
       <span class="rtc num">${sgn(r.rating)}</span><span class="ptc num">${Math.round(r.ptop*100)}%</span>`;
     btn.addEventListener('click',()=>{const sc=board.scrollTop;expanded=open?null:r.id;render();board.scrollTop=sc;});
     it.appendChild(btn);
@@ -279,7 +283,7 @@ $('#b-bowl').onclick=()=>{role='bowl';expanded=null;render();$('#board').scrollT
 $('#q').addEventListener('input',e=>{query=e.target.value;render();$('#board').scrollTop=0});
 
 /* method */
-$('#s3').textContent=`A delivery counts as pressure when its leverage is in the top 20% of all first-innings balls (at least ${M.cut1.toFixed(2)}) or of all chase balls (at least ${M.cut2.toFixed(2)}), pooled across matches. That gives ${M.press_balls.toLocaleString()} pressure balls, and the bottom half of balls becomes each player's ordinary baseline.`;
+$('#s3').textContent=`A delivery counts as pressure when its leverage is in the top 20% of all first-innings balls (at least ${M.cut1.toFixed(2)}) or of all chase balls (at least ${M.cut2.toFixed(2)}), pooled across matches. That gives ${M.press_balls.toLocaleString()} pressure balls. Each player is compared with his own usual level over all legal balls; the bottom half of balls by leverage (ordinary balls) is used only for comparison.`;
 (function(){
   const svg=$('#cal'),S=300,ox=48,oy=16;let g=`<g class="axis">`;
   for(let i=0;i<=5;i++){const v=i/5;g+=`<line x1="${ox}" x2="${ox+S}" y1="${oy+S*(1-v)}" y2="${oy+S*(1-v)}" stroke="#C9CFE2"/><text x="${ox-8}" y="${oy+S*(1-v)+4}" text-anchor="end">${v.toFixed(1)}</text><text x="${ox+S*v}" y="${oy+S+20}" text-anchor="middle">${v.toFixed(1)}</text>`}

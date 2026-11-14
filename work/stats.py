@@ -36,12 +36,15 @@ tops={}
 for role in ('bat','bowl'):
     o=pd.read_pickle(f'{W}/final_{role}.pkl').sort_values('rating',ascending=False); top=o.head(10).copy(); tops[role]=top
     # fig3 dotplot
-    fig,ax=plt.subplots(figsize=(7,3.4)); y=np.arange(10)[::-1]
-    ax.barh(y,top.base100,color=GREY,height=.6,label='Expected from all-ball record')
-    ax.barh(y,top.v100-top.base100,left=top.base100,color=PINK,height=.6,label='Pressure-specific lift')
+    fig,ax=plt.subplots(figsize=(7,3.9)); y=np.arange(10)[::-1]
+    lo=np.minimum(top.base100,top.v100); up=(top.v100-top.base100).clip(lower=0); dn=(top.base100-top.v100).clip(lower=0)
+    ax.barh(y,lo,color=GREY,height=.6,label='Expected level (from all-ball record)')
+    ax.barh(y,up,left=top.base100,color=PINK,height=.6,label='Pressure-specific lift (adds to rating)')
+    if (dn>0).any(): ax.barh(y,dn,left=top.v100,color='white',edgecolor=GREY,hatch='////',lw=.6,height=.6,label='Pressure-specific shortfall (rating below expected)')
+    for yy,v in zip(y,top.v100): ax.plot([v,v],[yy-.32,yy+.32],c=NAVY,lw=1.4,zorder=4)
     ax.scatter(top.v100_raw,y,c=NAVY,marker='D',s=18,zorder=5,label='Raw pressure value (unshrunk)')
     ax.set_yticks(y); ax.set_yticklabels([f'{i+1}. {n}' for i,n in enumerate(top.name)]); ax.axvline(0,c='k',lw=.6)
-    ax.set_xlabel('Win probability added per 100 pressure balls (wins, vs average player)'); ax.legend(frameon=False,fontsize=7.5,loc='lower right')
+    ax.set_xlabel('Win probability added per 100 pressure balls (wins, vs average player)'); ax.legend(frameon=False,fontsize=7,loc='upper center',bbox_to_anchor=(0.45,-0.2),ncol=2,columnspacing=1.2,handlelength=1.6)
     ax.set_title(('Top-10 batters' if role=='bat' else 'Top-10 bowlers')+' under pressure',fontsize=10,loc='left')
     plt.tight_layout(); plt.savefig(f'fig/top_{role}.png',dpi=200); plt.close()
     # fig4 scatter usual vs pressure

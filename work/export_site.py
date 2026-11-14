@@ -3,7 +3,7 @@ import json
 S=json.load(open('stats.json',encoding='utf-8'))
 b=load('main'); L=b[b.legal==1]
 out={'meta':{'matches':S['matches'],'balls':S['balls'],'press_balls':S['press_balls'],'t20i':S['t20i_m'],'ipl':S['ipl_m'],'cut1':S['cut']['1'],'cut2':S['cut']['2'],
- 'cal_err2':S['cal_err2'],'cal_err1':S['cal_err1'],'split_bat':0.16,'split_bowl':0.21,'sb_bat':0.28,'sb_bowl':0.34,'c_bat':0.35,'c_bowl':0.10,'data_to':'1 Nov 2026','acc1':0.64,'acc2':0.82,'min_matches':15,'cv0_bat':0.129,'cv_bat':0.138,'cv0_bowl':0.117,'cv_bowl':0.117}}
+ 'cal_err2':S['cal_err2'],'cal_err1':S['cal_err1'],'split_bat':0.16,'split_bowl':0.21,'sb_bat':0.28,'sb_bowl':0.34,'c_bat':0.35,'c_bowl':0.10,'data_to':'1 Nov 2026','acc1':0.64,'acc2':0.81,'min_matches':15,'cv0_bat':0.129,'cv_bat':0.138,'cv0_bowl':0.117,'cv_bowl':0.117}}
 CONS=json.load(open('consistency.json')); VCK=json.load(open('variant_checks.json'))
 # leverage by over + calibration
 out['li_over']={str(i):[round(float(x),3) for x in L[L.innings==i].groupby('overid').li.mean().values] for i in (1,2)}
