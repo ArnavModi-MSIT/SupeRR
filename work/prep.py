@@ -8,8 +8,9 @@ ok=m[m.win_team_id.notna()&m.revised_target.isna()&m.first_inn_revised_overs.isn
 b=b[b.innings.isin([1,2])&b.match_id.isin(ok.match_id)].copy()
 b=b.sort_values(['match_id','innings','innings_ball_num']).reset_index(drop=True)
 b['legal']=(~b.extras_type.isin(['wide','Overstep','other'])).astype(int)
-b['ex']=np.where(b.extras_type.isin(['wide','Overstep']),1,0)+b.extras_2_runs
-b['ex']+=np.where(b.extras_type=='byes',2.0,0)+np.where(b.extras_type=='legbyes',1.4,0)+np.where(b.extras_type=='Penalty',5,0)
+# extras runs as recorded (updated data pack, 16 Nov): extras1_runs = wide/no-ball/bye/leg-bye/penalty runs; extras_2_runs = extra runs added to them
+b['ex']=b.extras1_runs.fillna(0).astype(float)+b.extras_2_runs.fillna(0)
+b.loc[b.extras_type.isna(),'ex']=b.loc[b.extras_type.isna(),'extras_2_runs'].fillna(0)   # one row has a stray extras1_runs with no extras type
 b['tot']=b.runs+b.ex
 b['bat_runs']=np.where(b.extras_type.isin(['byes','legbyes','wide','Penalty']),0,b.runs)
 b['wk']=b.is_wicket.astype(int)
@@ -24,7 +25,7 @@ b['target']=np.where(b.innings==2,b.inn1_total+1,np.nan)
 b['need']=b.target-b.score_before
 # keep matches where both innings present
 cnt=b.groupby('match_id').innings.nunique(); b=b[b.match_id.isin(cnt[cnt==2].index)].copy()
-b=b.merge(m[['match_id','match_date','match_format','season','comp_id','comp_name','win_team_id','home_team','away_team']],on='match_id',how='left')
+b=b.merge(m[['match_id','match_date','match_format','season','comp_id','comp_name','win_team_id','home_team','away_team','venue_id']],on='match_id',how='left')
 b['bat_win']=(b.win_team_id==b.batting_team_id).astype(int)
 b['ipl']=(b.match_format=='T20').astype(int)
 b.to_parquet(OUT) if OUT.endswith('.parquet') else b.to_pickle(OUT)

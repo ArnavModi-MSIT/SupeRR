@@ -37,3 +37,7 @@ work/*_new.py
 work/*_pre.py
 work/*_pre_*.html
 work/*_pre_*.md
+work/v1_outputs/*.pkl
+work/log_*.txt
+work/core_keep.py
+work/v1_outputs/

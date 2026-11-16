@@ -12,18 +12,18 @@ Ranked by pressure rating: win probability added per 100 pressure balls, in wins
 
 | # | Batters | Rating | | # | Bowlers | Rating |
 |---|---|---|---|---|---|---|
-| 1 | Rinku Singh | 1.50 | | 1 | Mohsin Khan | 0.76 |
-| 2 | Ashutosh Sharma | 1.23 | | 2 | Josh Hazlewood | 0.76 |
-| 3 | Vaibhav Sooryavanshi | 1.06 | | 3 | Varun Chakravarthy | 0.64 |
-| 4 | Tim David | 0.92 | | 4 | Rashid Khan | 0.61 |
-| 5 | Kamindu Mendis | 0.90 | | 5 | Sunil Narine | 0.59 |
-| 6 | Dasun Shanaka | 0.75 | | 6 | Wanindu Hasaranga | 0.49 |
-| 7 | Rashid Khan | 0.70 | | 7 | Lockie Ferguson | 0.48 |
-| 8 | Heinrich Klaasen | 0.66 | | 8 | Kuldeep Yadav | 0.46 |
-| 9 | Suryakumar Yadav | 0.65 | | 9 | Matheesha Pathirana | 0.43 |
-| 10 | Harry Brook | 0.61 | | 10 | Jasprit Bumrah | 0.43 |
+| 1 | Tim David | 1.35 | | 1 | Josh Hazlewood | 0.78 |
+| 2 | Ashutosh Sharma | 1.31 | | 2 | Varun Chakravarthy | 0.65 |
+| 3 | Rinku Singh | 1.21 | | 3 | Rashid Khan | 0.58 |
+| 4 | Rashid Khan | 1.17 | | 4 | Sunil Narine | 0.55 |
+| 5 | Heinrich Klaasen | 0.77 | | 5 | Mohsin Khan | 0.54 |
+| 6 | Dasun Shanaka | 0.75 | | 6 | Kuldeep Yadav | 0.50 |
+| 7 | Suryakumar Yadav | 0.68 | | 7 | Wanindu Hasaranga | 0.48 |
+| 8 | Shreyas Iyer | 0.63 | | 8 | Lockie Ferguson | 0.45 |
+| 9 | Namboori Tilak Varma | 0.63 | | 9 | Mujeeb Ur Rahman | 0.41 |
+| 10 | Rahul Tewatia | 0.60 | | 10 | Krunal Pandya | 0.40 |
 
-Places 6–10 are close calls (Mohsin Khan and Hazlewood are effectively tied), and pressure-specific skill is a small part of each rating. Usual levels use legal balls only. See §7 of the report for reliability and limitations.
+Places 6–10 are close calls, and pressure-specific skill is a small part of each rating. Usual levels use legal balls only. Built on the updated ball-by-ball file issued on 16 Nov (actual extra runs recorded); the original file kept 7 of these batters and 8 of these bowlers. See §7 of the report for reliability and limitations.
 
 ## Method in brief
 
@@ -33,7 +33,7 @@ Places 6–10 are close calls (Mohsin Khan and Hazlewood are effectively tied), 
 3. Value per ball = win probability after the actual outcome minus the expected value after an average ball in that state.
 4. Hierarchical empirical-Bayes rating (shrinkage constants chosen by cross-validation), opposition adjustment,
    eligibility (≥100 pressure balls for batters, ≥90 for bowlers, ≥15 matches with pressure balls, active in 2026).
-5. 300-match bootstrap for rank ranges; sensitivity runs (absolute leverage, T20I-only, IPL-only, 2024+, no opposition adjustment, iterative adjustment, pace/spin context, venue scoring, usual level from non-pressure balls, chases only, excluding Associate/A-team matches, true IPL-only, bye values, per-match pressure cut-off, bowler baseline with wides and no-balls).
+5. 300-match bootstrap for rank ranges; sensitivity runs (absolute leverage, T20I-only, IPL-only, 2024+, no opposition adjustment, iterative adjustment, pace/spin context, venue scoring, usual level from non-pressure balls, chases only, excluding Associate/A-team matches, true IPL-only, per-match pressure cut-off, bowler baseline with wides and no-balls).
 
 ## Reproduce
 
@@ -52,7 +52,6 @@ python stats.py           # figures and stats.json
 python consistency.py     # share of pressure matches with a positive value (report section 7)
 python lb_check.py bat 300   # conservative lower-bound ranking check (also: bowl)
 python oos_check.py       # win-probability model refit on pre-2025 matches, scored on 2025-26
-python bye_sens.py        # sensitivity to bye / leg-bye run values
 python export_site.py     # docs/data.js
 python build_report.py    # report PDF
 ```

@@ -84,12 +84,12 @@ b['o']=-1
 cl=b[bat_ok]
 oc=np.where(cl.is_wicket&cl.dismissed_player_id.eq(cl.striker_id),6,cl.bat_runs.map({0:0,1:1,2:2,3:3,4:4,5:2,6:5}).fillna(0).astype(int))
 b.loc[cl.index,'o']=oc
-m=b.groupby('match_id').agg(t=('inn1_total','first'),h=('home_team','first'),ipl=('ipl','first')).reset_index()
+m=b.groupby('match_id').agg(t=('inn1_total','first'),h=('venue_id','first'),ipl=('ipl','first')).reset_index()
 m['lg']=m.groupby('ipl').t.transform('mean')
 g=m.groupby(['ipl','h']).agg(d=('t',lambda x:0),n=('t','size'),mt=('t','mean'),lg=('lg','first')).reset_index()
 g['f']=(g.mt-g.lg)*g.n/(g.n+8)
 g['vt']=pd.qcut(g.f.rank(method='first'),3,labels=[0,1,2]).astype(int)
-b['vt']=b[['ipl','home_team']].merge(g[['ipl','h','vt']].rename(columns={'h':'home_team'}),on=['ipl','home_team'],how='left').vt.fillna(1).astype(int).values
+b['vt']=b[['ipl','venue_id']].merge(g[['ipl','h','vt']].rename(columns={'h':'venue_id'}),on=['ipl','venue_id'],how='left').vt.fillna(1).astype(int).values
 print(g.sort_values('f').head(4)[['ipl','h','n','f']].to_string()); print(g.sort_values('f').tail(4)[['ipl','h','n','f']].to_string())
 keys=['innings','phase','wkb','wpb','ipl','vt']
 P=pd.crosstab([b.loc[cl.index,k] for k in keys],b.loc[cl.index,'o'])

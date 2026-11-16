@@ -3,7 +3,7 @@
 import pandas as pd, numpy as np, json
 y=pd.read_pickle('balls_wp.pkl')
 fb=pd.read_pickle('final_bat.pkl'); fw=pd.read_pickle('final_bowl.pkl')
-cut=np.where(y.innings==1,1.002087830658601,1.592272202481281)
+cq=y[y.legal==1].groupby('innings').li.quantile(.8); cut=y.innings.map(cq).values
 p=y[(y.li>=cut)&(y.legal==1)]
 out={}
 for role,f,idc,vc,ok in [('bat',fb,'striker_id','V_bat','bat_ok'),('bowl',fw,'bowler_id','V_bowl',None)]:

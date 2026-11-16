@@ -178,20 +178,20 @@ footer a{color:var(--ink);font-weight:700}
 
   <section id="trust" aria-labelledby="th">
     <h2 id="th">How far to trust the ranking</h2>
-    <p class="sub">Pressure samples are small. Most players have 100 to 450 pressure balls (up to about 950 for some bowlers), so luck is a large part of any raw number.</p>
+    <p class="sub">Pressure samples are small. Most players have 100 to 450 pressure balls (up to about 975 for some bowlers), so luck is a large part of any raw number.</p>
     <div class="trust" id="trustnums"></div>
     <h3 style="margin:0 0 8px">Do the top ten survive a different modelling choice?</h3>
     <table class="t" id="sens" style="max-width:760px"></table>
     <p class="figcap">Counts of our ten that stay in the top ten. "Too few balls" means the player fell below the minimum sample in that cut, so the test could not be run.</p>
     <h3 style="margin:30px 0 10px">Where the model is less certain</h3>
     <ul class="lim" id="lim">
-      <li>Vaibhav Sooryavanshi, Ashutosh Sharma and Harry Brook rest on only 103 to 114 pressure balls over 15 to 18 matches. A 15-match rule removed Sufiyan Muqeem (11 matches), who would otherwise rank first among bowlers; a third of his pressure balls came against Zimbabwe, Oman and A-teams.</li>
-      <li>Mohsin Khan and Josh Hazlewood are effectively tied at the top of the bowlers (0.763 and 0.762). Bowler ratings rest on legal balls only; counting wides and no-balls in a bowler's usual level would swap Krunal Pandya in for Matheesha Pathirana (see table).</li>
-      <li>Rinku Singh ranks first on IPL data but much lower on T20I-only and since-2024 samples, so his lead is concentrated in some seasons.</li>
-      <li>Dasun Shanaka's rating is driven by T20I matches; he has too few IPL pressure balls to be ranked on IPL data alone.</li>
-      <li>The win-probability model has no venue, pitch, dew or team-strength inputs. It is weaker in the first innings (about 64% of results called correctly, against 81% in chases), so first-innings pressure is measured less sharply. Byes and leg-byes are estimated from run margins.</li>
+      <li>Built on the updated ball-by-ball file issued on 16 Nov, which records the actual extra runs; reconstructed scores now reproduce every "won by N runs" margin. Rerunning on the original file keeps 7 of the ten batters and 8 of the ten bowlers.</li>
+      <li>Ashutosh Sharma and Krunal Pandya rest on the smallest samples, 116 and 133 pressure balls. The minimums were fixed in advance: Vaibhav Sooryavanshi has 93 pressure balls, seven short, and the 15-match rule removes Sufiyan Muqeem (11 matches), a third of whose pressure balls came against Zimbabwe, Oman and A-teams.</li>
+      <li>Rinku Singh is 2nd to 4th in most checks but 21st on T20I-only and 39th since 2024, so his rating is concentrated in some seasons. Dasun Shanaka's rating is driven by T20I matches; he has too few IPL pressure balls to be ranked on IPL data alone.</li>
+      <li>Bowler ratings rest on legal balls only; counting wides and no-balls in a bowler's usual level would swap Abrar Ahmed in for Lockie Ferguson (see table). Bowlers' pressure value is hard to predict from one half of the matches to the other, so the bowler list is mostly about all-round quality.</li>
+      <li>The win-probability model has no venue, pitch, dew or team-strength inputs. It is weaker in the first innings (about 64% of results called correctly, against 81% in chases), so first-innings pressure is measured less sharply.</li>
       <li>Ratings are not comparable between the batter and bowler lists; Rashid Khan appears in both.</li>
-      <li>The data runs to 1 Nov 2026 and shows no retention lists, so some listed players may already be contracted before the 2027 auction. There is also no price, nationality or availability information: the ranking shows who performs, not who is a bargain.</li>
+      <li>The data runs to 1 Nov 2026. There is no price, nationality or availability information, so the ranking shows who performs, not who is a bargain.</li>
     </ul>
   </section>
 

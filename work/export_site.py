@@ -3,7 +3,7 @@ import json
 S=json.load(open('stats.json',encoding='utf-8'))
 b=load('main'); L=b[b.legal==1]
 out={'meta':{'matches':S['matches'],'balls':S['balls'],'press_balls':S['press_balls'],'t20i':S['t20i_m'],'ipl':S['ipl_m'],'cut1':S['cut']['1'],'cut2':S['cut']['2'],
- 'cal_err2':S['cal_err2'],'cal_err1':S['cal_err1'],'split_bat':0.16,'split_bowl':0.21,'sb_bat':0.28,'sb_bowl':0.34,'c_bat':0.35,'c_bowl':0.10,'data_to':'1 Nov 2026','acc1':0.64,'acc2':0.81,'min_matches':15,'cv0_bat':0.129,'cv_bat':0.138,'cv0_bowl':0.117,'cv_bowl':0.117}}
+ 'cal_err2':S['cal_err2'],'cal_err1':S['cal_err1'],'split_bat':0.19,'split_bowl':0.15,'sb_bat':0.32,'sb_bowl':0.26,'c_bat':0.35,'c_bowl':0.10,'data_to':'1 Nov 2026','acc1':0.64,'acc2':0.81,'min_matches':15,'cv0_bat':0.158,'cv_bat':0.167,'cv0_bowl':0.068,'cv_bowl':0.064}}
 CONS=json.load(open('consistency.json')); VCK=json.load(open('variant_checks.json'))
 # leverage by over + calibration
 out['li_over']={str(i):[round(float(x),3) for x in L[L.innings==i].groupby('overid').li.mean().values] for i in (1,2)}
@@ -42,6 +42,8 @@ out['sens']=[['No opposition-strength correction','rk_noadj'],['Iterative player
 out['sens']=[[n,cnt('bat',c),sum(1 for x in top['bat'] if x[c] is None),cnt('bowl',c),sum(1 for x in top['bowl'] if x[c] is None)] for n,c in out['sens']]
 out['sens'].append(['Pressure cut-off set within each match-innings (20% of every match)',VCK['cut_match']['bat']['kept'],0,VCK['cut_match']['bowl']['kept'],0])
 out['sens'].append(['Bowler usual level from all deliveries, incl. wides and no-balls',VCK['bowl_all']['bat']['kept'],0,VCK['bowl_all']['bowl']['kept'],0])
+_o={k:set(pd.read_pickle(f'v1_outputs/final_{k}.pkl').sort_values('rank').name[:10]) for k in ('bat','bowl')}
+out['sens'].append(['Original data file (byes and leg-byes estimated, before the 16 Nov update)',len(_o['bat']&{x['name'] for x in top['bat']}),0,len(_o['bowl']&{x['name'] for x in top['bowl']}),0])
 open('../docs/data.js','w',encoding='utf-8').write('window.DATA='+json.dumps(out,ensure_ascii=False)+';')
 print(len(out['bat']),len(out['bowl']),out['sens'],open('../docs/data.js').__sizeof__())
 import os; print(os.path.getsize('../docs/data.js'))
